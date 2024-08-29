@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductsService } from './services/products.service';
 import { Product } from './modals/product.interface';
-import { Subject } from 'rxjs';
+import { pipe, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getAllProducts() {
-    this.ProductsService.getAllProducts().subscribe({
+    this.ProductsService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         console.log(res);
         this.products = res;
